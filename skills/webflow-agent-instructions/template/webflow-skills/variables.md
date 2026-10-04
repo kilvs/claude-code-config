@@ -38,21 +38,24 @@ Laws:
 
 Ramp names are **descriptive per site**: what the colour is, never its role. `navy`, `sand`, `coral`; not `primary`. Hue folders keep the colour list navigable; `spacer/` and `number/` stay one level.
 
-**The palette comes from the design file, nothing else**:
-- Take the exact swatches from the Figma variables or brand guide and slot each into a step number by lightness (light 100–300, mid 400–500, dark 700–900). A hue the designer gives three swatches gets three steps, not ten. Never generate tints to fill a ramp; add a step only when the designer adds the colour.
+**The palette is anchored on the design file, then filled to full ramps**:
+- Take the exact swatches from the Figma variables or brand guide and slot each into a step number by lightness (light 50–300, mid 400–500, dark 600–900). The swatches never move or change value.
+- Fill every hue to the full ramp `50, 100, 200 … 900` (neutral also `0` white and `950`). Generate the missing steps in OKLCH from the swatch: same hue, lightness spaced between the swatches, chroma tapered at both ends and never above the lightest swatch on the light side. Neutrals stay pure grey unless the design tints them.
+- The Theme aliases **only the design's own swatches**. Generated steps exist so the ramp reads in order and a later design step has a slot; bind one to the Theme only when the designer approves it. Primitives are never bound to elements, so the extra steps change nothing on the canvas.
+- Create a hue's steps light to dark in one batch. The API's duplicate-name check treats a new `50` as clashing with an existing `500` in the same folder and saves it as `50-2`; rename it back to `50` with `rename_variable`. Variables cannot be reordered by API: create in order, or drag in the panel.
 - The template ships placeholder ramps (`blue`, `pink`) so the Theme has something to alias. Once the client palette is in and every Theme token is re-pointed, delete the placeholder ramps (check no style, alias or embed uses them first). Leftover placeholder colours are a bug.
 - The brand role may be a neutral. When the design's buttons and links are black, the Theme `brand`, `link`, `focus` and `button/primary-*` tokens alias `neutral/900` or `950`, and each decorative hue gets its own Theme token (`background/tangerine`) plus a `background-color-<hue>` utility.
 - Status colours (`green`, `amber`, `red`) keep the template values until the design gives its own; say so in the decision log.
 
 ```
 colour/                          one folder per hue; compiles to --_primitives---colour--<hue>--<step>
-  <brand>/<step>                 the design's swatches only, named by the real hue (navy, blue, coral), never "brand"; 10 steps only when the brand guide gives 10
+  <brand>/50 … 900               full ramp named by the real hue (navy, blue, coral), never "brand"; design swatches at their slots, the rest generated (OKLCH)
   <accent>/<step>                one folder per further hue the design uses
   neutral/0                      white
   neutral/50 … 950               11 greys, tinted toward the brand
-  green/100, green/500           success
-  amber/100, amber/500           warning
-  red/100,   red/500             error
+  green/50 … 900                 success (template values until the design gives its own; Theme uses 100 and 500)
+  amber/50 … 900                 warning
+  red/50 … 900                   error
   info uses the brand ramp when the brand is blue; otherwise blue/100, blue/500
   alpha/black-10/20/40/60        rgba overlays
   alpha/white-10/20/40/60

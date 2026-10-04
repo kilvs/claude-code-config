@@ -44,7 +44,7 @@ These apply to every Webflow build unless an org says otherwise:
   Styles component keeps one embed; the standard's CSS is appended under comment banners
   (base, grounds, canvas hooks) after the untouched starter code.
 - Navbar: never the native Webflow Navbar element. Divs, links and real `button`s (DOM `dom_tag: button`), the state helper for state and ARIA, IX3 custom events for motion (interactions skill sections 3 and 8). The Navbar is a Component (group Navigation).
-- Colour primitives (1 Oct 2026): the design file's swatches only, no generated tints, no leftover template ramps or starter `default` collection (variables skill sections 2 and 10).
+- Colour primitives (1 Oct 2026, full ramps 4 Oct 2026): every hue is a full 50 to 900 ramp (neutral 0 to 950) anchored on the design file's swatches, the gaps generated in OKLCH; the Theme aliases only the real swatches. No leftover template ramps or starter `default` collection (variables skill sections 2 and 10).
 - Variables (22 Sep 2026): seven collections, Primitives (never bound, hue folders), Theme
   (Light + Dark), Typography (automatic breakpoint modes), Spacing and Layout (manual modes of
   the same names applied on the Body tag per breakpoint, because Webflow lets one collection
