@@ -1,0 +1,14 @@
+# Components
+
+- **No Component exists at the start of a build.** Every website starts different, so nothing is pre-created, not even the button. A block becomes a Webflow **Component** once it repeats on two or more pages, three or more times anywhere, or inside one section (cards in a grid, steps, logos, testimonials).
+- Variation on a Component happens through **variants** (Primary / Secondary, Light / Dark, With image / Without), never through `is-*` combo classes on the instance. `is-*` combos are for non-component classes only.
+- Content that differs per instance is a **prop** (text, rich text, image, link, visibility). Never edit inside an instance to change content; edit the prop.
+- Component classes are `component_[name]_[tag]`. Never rename a class inside a component definition; it changes every instance.
+- The page owns the grid; the component owns its internals. A card component drops into any `_item` unchanged.
+- **Build component-ready from the first pass.** Anything that could repeat (a card, a step, a logo, a button row, a list of links) gets one clean root and self-contained internals, so it converts to a Component without a rebuild.
+- **Slots where the client adds, removes or reorders items** (the cards in a grid, the buttons in a row, the links in a column). A slot ships with starter content so an empty drop still looks designed. Fixed-order pieces stay props.
+- **Every Component guides the client:** a group, a plain-language description (what it is and how to use it), and a tooltip on every prop. Write for a marketer: no class, token or code names. Prop order: own Variant, own toggles, then content groups in visual order; inside a group Variant, text, heading tag, link, image, alt text, visibility last.
+- **Base Elements:** inside Cards and Sections, the text and media pieces are small Components themselves (Eyebrow, Heading, Description, Button, Image, and Button Group for a button row), with the parent's props bound through to them. Not pre-created; they appear with the first componentised card or section.
+- **Component names carry a type prefix:** `Section: CTA`, `Card: Insight`, `Item: Checklist`, `Visual: Folder`, `Footer: Link`. Global and base pieces stay plain (Global Styles, Navbar, Footer, Button, Heading, Image). Groups stay few: Global, Navigation, Base Elements, Visuals, Cards, Sections. Descriptions are one short sentence.
+- **Every slot carries a Navigator display name** `Slot: <what goes in, plural>` (`Slot: Buttons`, `Slot: Content`, `Slot: Media`). "Slot:" is reserved for slots; no Component name starts with it. Display names are labels only; class names never change.
+- Global CSS (selectors for `data-variant` grounds, canvas-only hooks, resets) lives in the **Global Styles component**'s one embed, each concern under its own comment banner. The site's own JavaScript lives the same way in the **Global Scripts component**. Never in page custom code.

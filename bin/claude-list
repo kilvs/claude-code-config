@@ -1,0 +1,202 @@
+#!/bin/zsh
+# claude-list: list the Claude Code profiles on this Mac, launch one, or add a new one.
+#
+#   claude-list              table, then a menu: a number launches that profile, "a" adds one
+#   claude-list --plain      tables only, no colour, no menu (CLAUDE_LIST_DAYS=14 widens the usage window)
+#   claude-list add [name]   add a profile straight away
+#
+# A profile is an alias in ~/.zshrc of the form
+#   alias claude-<name>='CLAUDE_CONFIG_DIR="$HOME/.claude-<name>" GH_CONFIG_DIR="$HOME/.config/gh-<name>" ... claude'
+# plus the plain `claude` (personal: ~/.claude, ~/.config/gh). The aliases are the source of
+# truth; this script never edits a profile, and it never deletes anything (backups go to
+# settings/superseded/ in AI Agent Config).
+set -e; setopt null_glob
+ROOT="${CLAUDE_LIST_ROOT:-$(cd "$(dirname "${0:A}")/.." && pwd)}"
+ZSHRC="${CLAUDE_LIST_ZSHRC:-$HOME/.zshrc}"
+SUP="$ROOT/settings/superseded"
+LINK="$ROOT/bin/link-profile.sh"
+
+# ---------- discovery ----------
+typeset -a NAMES ALIASES BODIES
+add_profile() { NAMES+=("$1"); ALIASES+=("$2"); BODIES+=("$3"); }
+discover() {
+  NAMES=(); ALIASES=(); BODIES=()
+  add_profile personal claude 'claude'
+  [ -f "$ZSHRC" ] || return 0
+  local line name body
+  while IFS= read -r line; do
+    [[ "$line" == alias\ claude-*=* ]] || continue
+    name="${line#alias claude-}"; name="${name%%=*}"
+    body="${line#*=}"; body="${body#\'}"; body="${body%\'}"
+    [[ "$body" == *CLAUDE_CONFIG_DIR=* ]] || continue
+    add_profile "$name" "claude-$name" "$body"
+  done < "$ZSHRC"
+}
+
+# Pull VAR="value" or VAR=value out of an alias body.
+body_var() { # body_var <body> <VAR>
+  local v; v="$(print -r -- "$1" | sed -nE "s/.*[[:space:]]?$2=(\"([^\"]*)\"|([^[:space:]]*)).*/\2\3/p")"
+  print -r -- "${v//\$HOME/$HOME}"
+}
+config_dir() { local d; d="$(body_var "$1" CLAUDE_CONFIG_DIR)"; print -r -- "${d:-$HOME/.claude}"; }
+gh_dir()     { local d; d="$(body_var "$1" GH_CONFIG_DIR)";     print -r -- "${d:-$HOME/.config/gh}"; }
+
+claude_login() { # <config dir>
+  local f="$1/.claude.json"
+  [ -f "$f" ] || { print "not logged in"; return; }
+  python3 - "$f" <<'PY'
+import json,sys
+try: e=json.load(open(sys.argv[1])).get('oauthAccount',{}).get('emailAddress')
+except Exception: e=None
+print(e or 'not recorded')
+PY
+}
+gh_login() { # <gh dir>
+  local f="$1/hosts.yml" u
+  [ -f "$f" ] || { print "not logged in"; return; }
+  u="$(grep -E '^[[:space:]]+user:' "$f" | head -1 | awk '{print $2}')"
+  print -r -- "${u:-not logged in}"
+}
+commit_identity() { # <name> <body>
+  local n ; n="$(body_var "$2" GIT_AUTHOR_NAME)"
+  local e ; e="$(body_var "$2" GIT_AUTHOR_EMAIL)"
+  if [ -z "$n$e" ] && [ -f "$HOME/.gitconfig-$1" ]; then
+    n="$(git config --file "$HOME/.gitconfig-$1" user.name 2>/dev/null || true)"
+    e="$(git config --file "$HOME/.gitconfig-$1" user.email 2>/dev/null || true)"
+  fi
+  if [ -z "$n$e" ] && [ "$1" = personal ]; then
+    n="$(git config --file "$HOME/.gitconfig" user.name 2>/dev/null || true)"
+    e="$(git config --file "$HOME/.gitconfig" user.email 2>/dev/null || true)"
+  fi
+  [ -n "$n$e" ] && print -r -- "$n <$e>" || print "not set"
+}
+wired() { # <config dir>
+  [ -L "$1/CLAUDE.md" ] && [ "$(readlink "$1/CLAUDE.md")" = "$ROOT/CLAUDE.md" ] && print yes || print no
+}
+
+# ---------- listing ----------
+RENDER="$ROOT/bin/claude-list-render.py"
+list() { # list [plain]
+  discover
+  local i body cdir gdir color=true
+  { [ "$1" = plain ] || [ ! -t 1 ] || [ -n "$NO_COLOR" ]; } && color=false
+  {
+    print -r -- "{\"root\": $(json_str "$ROOT"), \"color\": $color, \"days\": ${CLAUDE_LIST_DAYS:-7}, \"profiles\": ["
+    for (( i=1; i<=${#NAMES}; i++ )); do
+      body="${BODIES[$i]}"; cdir="$(config_dir "$body")"; gdir="$(gh_dir "$body")"
+      [ $i -gt 1 ] && print ","
+      print -r -- "{\"index\": $i, \"alias\": $(json_str "${ALIASES[$i]}"), \"config_dir\": $(json_str "$cdir"),"
+      print -r -- " \"login\": $(json_str "$(claude_login "$cdir")"), \"github\": $(json_str "$(gh_login "$gdir")"),"
+      print -r -- " \"commit\": $(json_str "$(commit_identity "${NAMES[$i]}" "$body")"), \"wired\": $(json_str "$(wired "$cdir")")}"
+    done
+    print "]}"
+  } | python3 "$RENDER"
+}
+json_str() { python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$1"; }
+
+launch() { # <index>
+  local body="${BODIES[$1]}"
+  print "Launching ${ALIASES[$1]} ..."
+  eval "exec $body"
+}
+
+# ---------- add ----------
+ask() { # ask <prompt> <default>  -> REPLY
+  local p="$1" d="$2"
+  if [ -n "$d" ]; then read "REPLY?$p [$d]: "; REPLY="${REPLY:-$d}"; else read "REPLY?$p: "; fi
+}
+insert_after_last() { # insert_after_last <file> <regex> <line>  (append at end when no match)
+  local f="$1" re="$2" line="$3" tmp
+  tmp="$(mktemp)"
+  awk -v re="$re" -v ins="$line" '
+    { lines[NR]=$0; if ($0 ~ re) last=NR }
+    END { for (i=1;i<=NR;i++){ print lines[i]; if (i==last) print ins }
+          if (!last) print ins }' "$f" > "$tmp"
+  cat "$tmp" > "$f"; rm -f "$tmp"
+}
+add() {
+  discover
+  local name="$1"
+  print "Add a Claude Code profile. Blank answers skip the optional parts."
+  while :; do
+    [ -n "$name" ] || { ask "Short name (letters, digits, dashes; becomes claude-<name>)" ""; name="$REPLY"; }
+    if [[ ! "$name" =~ '^[a-z0-9][a-z0-9-]*$' ]]; then print "  use lowercase letters, digits and dashes"; name=""; continue; fi
+    if (( ${NAMES[(Ie)$name]} )); then print "  claude-$name already exists"; name=""; continue; fi
+    break
+  done
+  local cdir="$HOME/.claude-$name" gdir="$HOME/.config/gh-$name"
+  ask "Commit name (optional)" ""; local gname="$REPLY"
+  ask "Commit email (optional)" ""; local gemail="$REPLY"
+  local repos=""
+  if [ -n "$gname$gemail" ]; then
+    ask "Repos folder that should always use this identity, e.g. ~/Developer/$name/ (optional)" ""; repos="$REPLY"
+    [ -n "$repos" ] && repos="${repos%/}/"
+  fi
+
+  local envs="CLAUDE_CONFIG_DIR=\"\$HOME/.claude-$name\" GH_CONFIG_DIR=\"\$HOME/.config/gh-$name\""
+  [ -n "$gname" ]  && envs="$envs GIT_AUTHOR_NAME=\"$gname\" GIT_COMMITTER_NAME=\"$gname\""
+  [ -n "$gemail" ] && envs="$envs GIT_AUTHOR_EMAIL=\"$gemail\" GIT_COMMITTER_EMAIL=\"$gemail\""
+  local a1="alias claude-$name='$envs claude'"
+  local a2="alias gh-$name='GH_CONFIG_DIR=\"\$HOME/.config/gh-$name\" gh'"
+
+  print
+  print "This will:"
+  print "  1. add to ${ZSHRC/#$HOME/~}:"
+  print "       $a1"
+  print "       $a2"
+  print "  2. create ${cdir/#$HOME/~} and ${gdir/#$HOME/~}"
+  [ -n "$gname$gemail" ] && print "  3. write ~/.gitconfig-$name with that identity" \
+    && [ -n "$repos" ] && print "     and include it from ~/.gitconfig for ${repos/#$HOME/~}"
+  print "  4. wire the profile to ${ROOT/#$HOME/~} with link-profile.sh"
+  print "  A copy of ${ZSHRC/#$HOME/~} goes to ${SUP/#$HOME/~} first. Nothing is deleted."
+  ask "Go ahead? (y/N)" "N"; [[ "$REPLY" == [yY]* ]] || { print "Nothing changed."; return 0; }
+
+  mkdir -p "$SUP"
+  cp "$ZSHRC" "$SUP/zshrc-$(date +%Y-%m-%d-%H%M%S)"
+  insert_after_last "$ZSHRC" '^alias claude-' "$a1"
+  insert_after_last "$ZSHRC" '^alias gh-'     "$a2"
+  print "  aliases added to ${ZSHRC/#$HOME/~}"
+  mkdir -p "$cdir" "$gdir"
+
+  if [ -n "$gname$gemail" ]; then
+    local gc="$HOME/.gitconfig-$name"
+    if [ -e "$gc" ]; then print "  $gc exists, left as is"; else
+      { print "# Identity for $name repos. Added $(date +%Y-%m-%d) by claude-list."; print "[user]";
+        [ -n "$gname" ]  && print "\tname = $gname"; [ -n "$gemail" ] && print "\temail = $gemail"; } > "$gc"
+      print "  wrote ${gc/#$HOME/~}"
+    fi
+    if [ -n "$repos" ]; then
+      git config --global --add "includeIf.gitdir:${repos/#$HOME/~}.path" "~/.gitconfig-$name"
+      print "  ~/.gitconfig includes it for ${repos/#$HOME/~}"
+    fi
+  fi
+
+  if [ -x "$LINK" ]; then "$LINK" "$cdir"; else print "  link-profile.sh not found at $LINK; wire the profile by hand"; fi
+
+  print
+  print "Done. Next steps:"
+  print "  source ${ZSHRC/#$HOME/~}          (or open a new terminal)"
+  print "  gh-$name auth login              (GitHub account for this profile)"
+  print "  claude-$name                     then /login, then /mcp for remote MCP servers"
+  print "  Update the accounts table in ${ROOT/#$HOME/~}/general/how-i-work.md"
+  print "  so the records stay in sync."
+}
+
+# ---------- main ----------
+case "${1:-}" in
+  add) shift; add "$1" ;;
+  --plain|-p) list plain ;;
+  -h|--help) sed -n '2,8p' "$0" ;;
+  "")
+    list
+    [ -t 0 ] || exit 0
+    print
+    read "REPLY?Number to launch, a to add, Enter to quit: "
+    case "$REPLY" in
+      a|A) print; add ;;
+      "") ;;
+      <1->) (( REPLY >= 1 && REPLY <= ${#NAMES} )) && launch "$REPLY" || print "No profile $REPLY" ;;
+      *) print "No profile $REPLY" ;;
+    esac ;;
+  *) print "unknown option: $1"; sed -n '2,8p' "$0"; exit 1 ;;
+esac

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ELEMENT_TITLE}} — Design Compilation</title>
+<style>
+  :root {
+    --g-bg: #101014; --g-surface: #17171c; --g-border: #2a2a32;
+    --g-text: #e8e8ec; --g-muted: #9a9aa6; --g-accent: #c9f24e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--g-bg); color: var(--g-text);
+    font: 400 1rem/1.5 ui-sans-serif, system-ui, sans-serif;
+  }
+  .gallery_header {
+    padding: 2rem 2.5rem 1rem; border-bottom: 1px solid var(--g-border);
+    display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap;
+  }
+  .gallery_header h1 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+  .gallery_header .gallery_meta { color: var(--g-muted); font-size: 0.875rem; }
+  .gallery_toc {
+    padding: 1rem 2.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;
+    border-bottom: 1px solid var(--g-border);
+  }
+  .gallery_toc a {
+    color: var(--g-text); text-decoration: none; font-size: 0.875rem;
+    border: 1px solid var(--g-border); border-radius: 100vw; padding: 0.375rem 0.875rem;
+  }
+  .gallery_toc a:hover, .gallery_toc a:focus-visible { border-color: var(--g-accent); color: var(--g-accent); }
+  .gallery_entry { padding: 2.5rem; border-bottom: 1px solid var(--g-border); }
+  .gallery_entry_head { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.375rem; }
+  .gallery_entry_num { color: var(--g-accent); font-weight: 700; font-size: 1.125rem; }
+  .gallery_entry_name { margin: 0; font-size: 1.125rem; font-weight: 600; }
+  .gallery_entry_open { margin-left: auto; color: var(--g-muted); font-size: 0.875rem; }
+  .gallery_entry_open:hover, .gallery_entry_open:focus-visible { color: var(--g-accent); }
+  .gallery_entry_direction { margin: 0 0 1.25rem; color: var(--g-muted); max-width: 60rem; }
+  .gallery_frame_wrap {
+    background: var(--g-surface); border: 1px solid var(--g-border);
+    border-radius: 0.5rem; overflow: hidden; resize: vertical;
+    min-height: 46rem; height: 46rem;
+  }
+  .gallery_frame_wrap iframe { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+  .gallery_hint { padding: 1rem 2.5rem 3rem; color: var(--g-muted); font-size: 0.8125rem; }
+</style>
+</head>
+<body>
+  <header class="gallery_header">
+    <h1>{{ELEMENT_TITLE}}</h1>
+    <span class="gallery_meta">{{VERSION_COUNT}} versions · {{PATH}} · generated {{DATE}}</span>
+  </header>
+
+  <nav class="gallery_toc" aria-label="Versions">
+    <!-- one per version: -->
+    <a href="#v{{NN}}">{{NN}} {{CONCEPT_NAME}}</a>
+  </nav>
+
+  <!-- ── repeat per version, numeric order ── -->
+  <section class="gallery_entry" id="v{{NN}}">
+    <div class="gallery_entry_head">
+      <span class="gallery_entry_num">{{NN}}</span>
+      <h2 class="gallery_entry_name">{{CONCEPT_NAME}}</h2>
+      <a class="gallery_entry_open" href="{{FILENAME}}" target="_blank" rel="noopener">open file ↗</a>
+    </div>
+    <p class="gallery_entry_direction">{{DIRECTION_LINE}}</p>
+    <div class="gallery_frame_wrap">
+      <!-- REQUIRED: embed via srcdoc, not src. Inline the version's full HTML
+           (with _tokens.css contents substituted for its <link> tag), HTML-escaped.
+           src="file.html" breaks under file:// security — never use it. -->
+      <iframe srcdoc="{{ESCAPED_VERSION_HTML_WITH_TOKENS_INLINED}}" loading="lazy" title="{{NN}} — {{CONCEPT_NAME}}"></iframe>
+    </div>
+  </section>
+  <!-- ── end repeat ── -->
+
+  <p class="gallery_hint">Drag the bottom edge of any frame to resize. Frames render the actual version files — edits to a file appear here on refresh.</p>
+</body>
+</html>

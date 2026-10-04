@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "webflow": {
+      "type": "http",
+      "url": "https://mcp.webflow.com/mcp"
+    },
+    "figma": {
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp"
+    },
+    "relume": {
+      "type": "http",
+      "url": "https://relume-library-mcp.relume.io/mcp"
+    }
+  }
+}

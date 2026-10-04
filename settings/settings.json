@@ -1,0 +1,6 @@
+{
+  "autoMemoryDirectory": "~/Documents/AI Agent Config/memory",
+  "permissions": {
+    "allow": []
+  }
+}
