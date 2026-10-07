@@ -48,7 +48,7 @@ Ramp names are **descriptive per site**: what the colour is, never its role. `na
 - Status colours (`green`, `amber`, `red`) keep the template values until the design gives its own; say so in the decision log.
 
 ```
-colour/                          one folder per hue; compiles to --_primitives---colour--<hue>--<step>
+colour/                          one folder per hue (22 Sep 2026); compiles to --_primitives---colour--<hue>--<step>
   <brand>/50 … 900               full ramp named by the real hue (navy, blue, coral), never "brand"; design swatches at their slots, the rest generated (OKLCH)
   <accent>/<step>                one folder per further hue the design uses
   neutral/0                      white
@@ -59,7 +59,7 @@ colour/                          one folder per hue; compiles to --_primitives--
   info uses the brand ramp when the brand is blue; otherwise blue/100, blue/500
   alpha/black-10/20/40/60        rgba overlays
   alpha/white-10/20/40/60
-spacer/                          the only raw spacing numbers on the site; huge / xhuge / xxhuge shrink per breakpoint, the rest stay constant
+spacer/                          the only raw spacing numbers on the site; huge / xhuge / xxhuge shrink per breakpoint (T 5 / 6 / 8, ML 4 / 5 / 6, MP 3 / 4 / 5 rem; 22 Sep 2026), the rest stay constant
   xxtiny   0.125rem   2px
   xtiny    0.25rem    4px
   tiny     0.5rem     8px
@@ -107,7 +107,7 @@ Bind each `heading/*` size to **both** the bare tag and the matching class (`h1`
 
 ```
 font/            heading · body · mono (only if the site shows code or figures)      Font Family
-heading/         Desktop  T991   ML767  MP479      Relume's scale, display added above it
+heading/         Desktop  T991   ML767  MP479      Relume's scale (22 Sep 2026), display added above it
   display        4.5rem   4      3.5    3
   h1             3.5rem   3      2.75   2.5
   h2             3rem     2.75   2.5    2.25
@@ -202,7 +202,7 @@ Every utility binds a token, so a value change happens in the Variables panel an
 4. `query_variables` with `css_name` to read the **compiled custom-property names** for the Global Styles embeds. Never guess a compiled name.
 5. Bind the tag styles (`h1`–`h6`, `p`, `body`) and every utility family to their tokens with `data_style_tool` > `update_style` and `variable_as_value: <variable id>`, then remove the utilities' per-breakpoint overrides (`remove_properties` with `breakpoint_id`), since the tokens now carry the responsive values. Create the classes the starter lacks: `text-size-xlarge`, `container-semi-full`, `container-full`, `text-color-muted/inverse/brand`, `background-color-brand/inverse`, `max-width-text/heading`, and the `xxtiny` / `xtiny` spacer, margin and padding steps. Verified live on 22 Sep 2026: bare tags and utilities resolve through the tokens at every breakpoint.
 
-6. **Starter clean-up**. The Client-First starter brings a `default` collection (`- Base Color - …`, `Background Color/…`, `Text Color/…`, `Link Color/…`, `Border Color/…`) and the classes `background-color-alternate` and `text-color-alternate`. The kit replaces all of it. Rebind every style still pointing at a `default` variable to its Theme token: `button` and its combos, `a`, `text-style-link`, `form_input` (border, placeholder), `form_input is-select-input`, `form_message-success/error`, and the style guide chrome (`fs-styleguide_header`, `_label`, `_label is-tag`, `_hero-label`, `_section-header`, `_message`). Find them by dumping `get_styles` with properties and searching for the `default` variable ids. Then delete the `default` variables (semantic first, then base), remove the empty collection in the Variables panel (the API cannot delete a collection), swap the `-alternate` classes on the Style Guide for `-inverse` and remove them. On the template itself this is done once, so a clone starts clean.
+6. **Starter clean-up** (1 Oct 2026). The Client-First starter brings a `default` collection (`- Base Color - …`, `Background Color/…`, `Text Color/…`, `Link Color/…`, `Border Color/…`) and the classes `background-color-alternate` and `text-color-alternate`. The kit replaces all of it. Rebind every style still pointing at a `default` variable to its Theme token: `button` and its combos, `a`, `text-style-link`, `form_input` (border, placeholder), `form_input is-select-input`, `form_message-success/error`, and the style guide chrome (`fs-styleguide_header`, `_label`, `_label is-tag`, `_hero-label`, `_section-header`, `_message`). Find them by dumping `get_styles` with properties and searching for the `default` variable ids. Then delete the `default` variables (semantic first, then base), remove the empty collection in the Variables panel (the API cannot delete a collection), swap the `-alternate` classes on the Style Guide for `-inverse` and remove them. On the template itself this is done once, so a clone starts clean.
 
 ## 11. Adding or changing a token
 

@@ -5,7 +5,7 @@ description: How every slider on this site is built. Swiper 14 driven by data-sw
 
 # Swiper slider kit
 
-Every slider on this site runs on one setup, decided by the user on 29 Sep 2026 and tested on staging (Sample Slider Test 51). The `sliders` rule is the law; this skill is the manual. A live demo and a copyable docs page exist on that test site at `/slider-docs`.
+Every slider on this site runs on one setup, decided on 29 Sep 2026 and tested on staging (Sample Slider Test 51). The `sliders` rule is the law; this skill is the manual. A live demo and a copyable docs page exist on that test site at `/slider-docs`.
 
 ## 1. How it works (plain words)
 
