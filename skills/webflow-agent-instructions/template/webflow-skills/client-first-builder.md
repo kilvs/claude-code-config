@@ -210,6 +210,8 @@ Custom Element SVG checks: flatten `use` and `symbol` first (the canvas does not
 
 ## 14. Code embeds: where CSS and JavaScript live
 
+**Style panel first**. Before any CSS goes in an embed, ask whether the style panel can do it. Class styles, states (hover, pressed, focus), transitions, breakpoints, combos and variants all go in the panel (or the style API, which writes the same thing), and a property with no native control goes in the class's Custom properties. Embed CSS is for what the panel cannot express: selectors beyond a class and its states (`:nth-child(3n)`, `:has()`, sibling and attribute selectors such as `[data-variant]`), `@keyframes`, `@supports`, font stacks (the panel keeps only the first family), canvas-only hooks, runtime state classes and third-party library classes. Its comment banner says why the panel could not do it. This is not a ban on CSS; it keeps the site editable in the Designer.
+
 | Code | Home | Class on the embed |
 |---|---|---|
 | Site CSS, and CSS reused by more than one section | **Global Styles** component embed, under a comment banner per concern (section 9) | `global-styles` |

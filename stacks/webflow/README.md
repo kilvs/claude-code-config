@@ -17,6 +17,12 @@ These apply to every Webflow build unless an org says otherwise:
   a heading needs nothing else. No empty or single-child wrapper divs.
 - Styles live in classes, never in page custom code: the user reviews the Designer canvas, which
   does not run custom code. Only an Embed's `<style>` renders on the canvas.
+- Style panel first: every style goes on a class through the style panel
+  or style API, states, transitions, breakpoints and combos included; a property with no native
+  control goes in the class's Custom properties. Embed CSS only for what the panel cannot do
+  (`:nth-child(3n)`, `:has()`, attribute and sibling selectors, `@keyframes`, font stacks,
+  canvas hooks, state and library classes), with the banner saying why. Kit: components rule,
+  builder section 14.
 - No Custom Elements for spans; block pieces are Div or Text Blocks. SVGs are uploaded assets
   placed as Image elements, one file per colour. Graphics: if any part
   animates it is never an image; build it as divs (or Custom Elements when an SVG shape itself
