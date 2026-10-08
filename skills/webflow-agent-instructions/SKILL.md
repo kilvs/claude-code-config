@@ -83,4 +83,8 @@ Use `Webflow:data_agent_instructions_tool` with batched `actions`:
 
 When the user adds or changes a rule/skill mid-project: update the **site** via MCP, and ask whether the change is universal — if yes, update `template/` in this skill too so the next deployment inherits it. A change to the base builder, naming or core-structure file goes into the matching copy under `template/orgs/<org>/` as well, unless it is about naming. Keep the deployed site set and this template from silently drifting apart.
 
+**MK-1 tracks the template**. Client First MK-1 is the clone source, so every template change is deployed to MK-1 in the same task, then read back.
+
+**No person names in deployed files**. Rules and skills on a site carry dates and reasons, never who asked (`(8 Oct 2026)`, not ``). Attribution goes in this Changes log and the project records only.
+
 Never publish a Webflow site. Agents stage, report, and hand the publish decision to the site owner — that law is inside the kit (edit-safety) and applies to this skill's own actions too.
