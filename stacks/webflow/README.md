@@ -101,6 +101,7 @@ Call `webflow_guide_tool` once per session before other Webflow tools. Query the
 ## Gotchas that became rules
 | Date | What happened | Rule |
 |---|---|---|
+| 9 Oct 2026 | Relinking buttons and anchors on another team's site | `set_component_instance_prop_values` link props take only `url`, `email`, `phone`, `popover` (page mode is rejected despite the schema): use relative paths like `/contact` or `#anchor`. A plain `id` via `set_attributes` fails with "internal error": use `data_element_settings_tool` > `set_dom_id`. A component instance root cannot take its own id; anchor on a page-level section instead. For new-tab links use `set_settings` key `link` with `static_link.open_in_new_tab: true`, not a custom `target` attribute. Tab links are tab triggers and cannot also carry an href |
 | 18 Sep 2026 | Layout only showed on the published site | Styles in classes, not custom code |
 | 21 Sep 2026 | Canvas-only styling needed for sliders | Key off `html:not(.w-mod-js)` inside a section Embed |
 | 21 Sep 2026 | Sticky scroll block never stuck | Runway is content height (`min-height`), never padding; never read `offsetTop` of the sticky element |
