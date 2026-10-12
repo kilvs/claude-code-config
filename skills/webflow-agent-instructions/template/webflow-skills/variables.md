@@ -74,7 +74,7 @@ spacer/                          the only raw spacing numbers on the site; huge 
   xhuge    8rem     128px
   xxhuge  12rem     192px
 number/
-  weight-400 / 500 / 600 / 700
+  weight-300 / 400 / 500 / 600 / 700 / 800
   line-height-100 / 110 / 120 / 150 / 170     stored as 1, 1.1, 1.2, 1.5, 1.7
 ```
 
@@ -117,7 +117,8 @@ heading/         Desktop  T991   ML767  MP479      Relume's scale (22 Sep 2026),
   h6             1.25rem  1.25   1.125  1.125
 text/                                             no breakpoint change (Relume keeps body constant)
   tiny 0.75rem · small 0.875rem · regular 1rem · medium 1.125rem · large 1.25rem · xlarge 1.5rem
-weight/          regular -> weight-400 · medium -> weight-500 · semibold -> weight-600 · bold -> weight-700
+weight/          light -> weight-300 · regular -> weight-400 · medium -> weight-500 · semibold -> weight-600 · bold -> weight-700 · xbold -> weight-800
+                 six weights, one per `text-weight-*` class (12 Oct 2026); a token is not a loaded face, so load only the weights the design uses
 line-height/     heading -> line-height-110 · tight -> line-height-120 · body -> line-height-150 · relaxed -> line-height-170
 letter-spacing/  tight -0.02em · normal 0em · wide 0.05em
 ```
@@ -185,7 +186,7 @@ Every utility binds a token, so a value change happens in the Variables panel an
 | Utility family | Binds |
 |---|---|
 | `heading-style-h1…h6`, `text-size-tiny…xlarge` | Typography `heading/*`, `text/*` (same tokens as the bare tags) |
-| `text-weight-regular/medium/semibold/bold` | Typography `weight/*` |
+| `text-weight-light/regular/medium/semibold/bold/xbold` | Typography `weight/*` |
 | `text-color-primary/secondary/muted/inverse/brand` | Theme `text/*` |
 | `background-color-primary/secondary/tertiary/brand/inverse` | Theme `background/*` |
 | `max-width-text`, `max-width-heading` | Layout `max-width/*` |
@@ -200,7 +201,7 @@ Every utility binds a token, so a value change happens in the Variables panel an
 2. `create_variable_mode` on Theme (`Dark`; the base mode is Light) and on Typography with `breakpoint_id` `medium` (991), `small` (767), `tiny` (479). On Primitives, Spacing and Layout create the same three names **without** `breakpoint_id` (manual), then apply them on the body tag per breakpoint with `data_style_tool` > `set_style_variable_mode`. The API has no delete or rename for modes; a wrong mode is removed from the panel's column menu.
 3. Create Primitives first, statically. Then the semantic collections with `existing_variable_id` aliases. Modes are filled with `update_*_variable` plus `mode_id`.
 4. `query_variables` with `css_name` to read the **compiled custom-property names** for the Global Styles embeds. Never guess a compiled name.
-5. Bind the tag styles (`h1`–`h6`, `p`, `body`) and every utility family to their tokens with `data_style_tool` > `update_style` and `variable_as_value: <variable id>`, then remove the utilities' per-breakpoint overrides (`remove_properties` with `breakpoint_id`), since the tokens now carry the responsive values. Create the classes the starter lacks: `text-size-xlarge`, `container-semi-full`, `container-full`, `text-color-muted/inverse/brand`, `background-color-brand/inverse`, `max-width-text/heading`, and the `xxtiny` / `xtiny` spacer, margin and padding steps. Verified live on 22 Sep 2026: bare tags and utilities resolve through the tokens at every breakpoint.
+5. Bind the tag styles (`h1`–`h6`, `p`, `body`) and every utility family to their tokens with `data_style_tool` > `update_style` and `variable_as_value: <variable id>`, then remove the utilities' per-breakpoint overrides (`remove_properties` with `breakpoint_id`), since the tokens now carry the responsive values. Rename the starter's `text-weight-normal` to `text-weight-regular` (`rename_style`, bindings survive). Create the classes the starter lacks: `text-size-xlarge`, `container-semi-full`, `container-full`, `text-color-muted/inverse/brand`, `background-color-brand/inverse`, `max-width-text/heading`, and the `xxtiny` / `xtiny` spacer, margin and padding steps. Verified live on 22 Sep 2026: bare tags and utilities resolve through the tokens at every breakpoint.
 
 6. **Starter clean-up** (1 Oct 2026). The Client-First starter brings a `default` collection (`- Base Color - …`, `Background Color/…`, `Text Color/…`, `Link Color/…`, `Border Color/…`) and the classes `background-color-alternate` and `text-color-alternate`. The kit replaces all of it. Rebind every style still pointing at a `default` variable to its Theme token: `button` and its combos, `a`, `text-style-link`, `form_input` (border, placeholder), `form_input is-select-input`, `form_message-success/error`, and the style guide chrome (`fs-styleguide_header`, `_label`, `_label is-tag`, `_hero-label`, `_section-header`, `_message`). Find them by dumping `get_styles` with properties and searching for the `default` variable ids. Then delete the `default` variables (semantic first, then base), remove the empty collection in the Variables panel (the API cannot delete a collection), swap the `-alternate` classes on the Style Guide for `-inverse` and remove them. On the template itself this is done once, so a clone starts clean.
 

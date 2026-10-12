@@ -80,7 +80,7 @@ home_projects_list_wrap      ← wraps the list area (padding/constraints live h
 
 - Tag defaults do the heavy lifting: `h1`–`h6` and body are styled globally and bound to Typography variables. Unmodified text gets no class.
 - Size ≠ semantics: pick the tag by document outline, the look by class. A visually-small heading that is semantically second-level is `<h2 class="heading-style-h5">`.
-- Utilities, every one bound to a token so a Variables edit never touches the style guide: `heading-style-h1…h6` and `text-size-tiny…xlarge` (Typography sizes), `text-weight-regular/medium/semibold/bold` (Typography weights), `text-color-primary/secondary/muted/inverse/brand` (Theme text/), `text-align-left/centre/right`, `background-color-primary/secondary/tertiary/brand/inverse` (Theme background/), `max-width-text/heading` (Layout).
+- Utilities, every one bound to a token so a Variables edit never touches the style guide: `heading-style-h1…h6` and `text-size-tiny…xlarge` (Typography sizes), `text-weight-light/regular/medium/semibold/bold/xbold` (Typography weights), `text-color-primary/secondary/muted/inverse/brand` (Theme text/), `text-align-left/centre/right`, `background-color-primary/secondary/tertiary/brand/inverse` (Theme background/), `max-width-text/heading` (Layout).
 - All font sizes bind Typography variables; families bind Typography `font/heading` and `font/body`. Never type a px font size.
 
 ## 7. Spacing
