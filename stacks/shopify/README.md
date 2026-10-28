@@ -20,4 +20,5 @@ Which store and which staff account: to be recorded.
 |---|---|---|
 
 ## Pointers
-The client card in `work/<org>/` for each store.
+The client card in `work/<org>/` for each store. For a Shopify store with a Webflow front end,
+see `stacks/smootify/`.

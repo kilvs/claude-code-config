@@ -33,7 +33,7 @@ Clone it to `~/Documents/AI Agent Config` (any location works; the setup script 
 memory folder at wherever it is), then follow the guide for your OS:
 
 ```sh
-git clone https://github.com/<you>/claude-code-config.git ~/Documents/"AI Agent Config"
+git clone https://github.com/<owner>/claude-code-config.git ~/Documents/"AI Agent Config"
 ```
 
 - macOS: [`docs/setup-mac.md`](docs/setup-mac.md)
@@ -48,3 +48,15 @@ Several skills are adapted from other projects and keep their own licence file i
 folder: Webflow's official skills (`webflow-official-*`), Vercel's React skills, Neon's
 skills, GreenSock's GSAP skill, samber's Go skills, Jezweb's WordPress skills and Anthropic's
 `frontend-design`. See each `SKILL.md` for the source.
+
+## Licence
+
+MIT for this repo's own files (`LICENSE`). Skills adapted from other projects keep their own
+licence file inside the skill folder, and that licence applies to that skill.
+
+## Staying up to date
+
+This repo is rebuilt automatically from a private working setup whenever a stack playbook or
+skill changes. Pull it now and then (`git pull`), or watch the repo on GitHub. If you forked
+it, merge upstream into your fork: your own `general/`, `work/` and `memory/` files are not
+touched by upstream changes, since upstream ships them blank.

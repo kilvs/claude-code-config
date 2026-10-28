@@ -1,0 +1,7 @@
+# Keep LF everywhere so Mac and Windows commits do not fight over line endings.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.zip binary
+*.woff binary
+*.woff2 binary
