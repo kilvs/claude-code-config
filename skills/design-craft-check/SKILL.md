@@ -5,6 +5,8 @@ description: "Keep web mocks from looking AI-generated: a plan-then-review pass 
 
 ## Changes
 
+- 29 Oct 2026: mock-stage tools apply to plain HTML/CSS mocks as well as Artifacts.
+- 29 Oct 2026: new section "Mock-stage tools". Hallmark and Impeccable help shape Artifact mocks; they stop once a mock goes to `webflow-ui-design` for conversion.
 - 29 Sep 2026: new. Built from two Apache 2.0 sources, both modified:
   Anthropic's `frontend-design` (github.com/anthropics/skills, commit 8a1541c; the AI-default
   clusters and the plan-then-review pass) and Paul Bakaus's `impeccable` (github.com/pbakaus/
@@ -112,6 +114,14 @@ Reduce intensity without going generic:
 
 "Too plain" is the opposite round: add depth (the designed cards, tinted shadows, contrasting
 grounds), not decoration.
+
+## Mock-stage tools
+
+Mocks and design systems are built first, as an Artifact page or as plain HTML/CSS files (local or a static preview repo); `webflow-ui-design` later converts them to Client-First and keeps the look 1:1. These tools belong to the mock stage only:
+
+- **Hallmark** (plugin, `/hallmark <prompt>`): directions for a new mock when the brief leaves the look open. A client brand guide wins over its themes. Swap its Wikimedia photos for labelled image slots on client work.
+- **Impeccable** (skill, invoke only): `/impeccable critique <target>` for a scored review, `/impeccable quieter|bolder|polish <target>` for a tuning round. The detector needs no skill: run `~/.claude/skills/impeccable/scripts/impeccable detect <file.html>` on every mock before showing it, and fix or explain each finding. Its plugin hooks are deliberately not installed.
+- **Never during conversion.** Once a mock is approved and handed to `webflow-ui-design`, none of these run and this checklist stops restyling. Its Verify list still applies to the converted page.
 
 ## Where it applies
 

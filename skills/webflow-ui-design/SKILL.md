@@ -5,6 +5,8 @@ description: Design UI/UX for marketing sites, landing pages, brand sites, and (
 
 ## Changes
 
+- 29 Oct 2026: the 1:1 conversion covers plain HTML/CSS mocks too, not only Artifacts ("we can do html css mocks as well"). Section renamed "Converting a mock (1:1)".
+- 29 Oct 2026: new section "Converting an Artifact mock (1:1)". Mocks are designed first as Artifacts (with Hallmark, Impeccable and `design-craft-check`); this skill then converts them to Client-First structure and keeps the look exactly. Those mock-stage tools never run during conversion.
 - 29 Sep 2026: stale motion lines fixed (no `data-animate-trigger`, no accordion/tabs presets, IX3 specs not a GSAP init script); cursor effects point at the IX3 Mouse Move trigger.
 - 29 Sep 2026: "Visual quality" now points at the `design-craft-check` skill instead of `frontend-design`.
 - 29 Sep 2026: sliders point at the kit's Swiper slider kit (`swiper-slider` skill, `sliders` rule) in "Porting to Webflow".
@@ -80,6 +82,15 @@ End design output with a short **Webflow build note**: the section/wrapper/conta
 **The HTML reference file as the deliverable.** A core use of this skill is producing a *designed HTML reference file* the user converts to Webflow by hand — the role Figma plays for many teams, except this file is already best-practices-correct. When that's the deliverable, build the launch quality in from the start: semantic tags and heading order, the optimising attributes (`launch/attributes.md`), per-page meta/OG/canonical, and the JSON-LD blocks for the page type (`launch/schema-templates.md`) included in the `<head>`, clearly marked so the dev knows what to paste where. Then run the pre-launch checklist (`launch/checklist.md`) as you build and hand over the post-launch half.
 
 **Quality is a build-time standard, not an afterthought.** For any real page HTML/CSS/JS (not a quick mockup), apply the `page-quality-auditor` skill in build-time mode so Performance, SEO, Accessibility, and Best Practices come out clean while writing. The `launch/` folder here is the Webflow-conversion layer on top of that; the auditor's references hold the deep per-criterion detail. Don't duplicate them — point to them.
+
+## Converting a mock (1:1)
+
+Mocks and design systems are designed first, as an Artifact page or as plain HTML/CSS files (a local file or a static preview repo). Either way that stage owns the look and may use Hallmark, Impeccable (`/impeccable`, detector) and `design-craft-check`. When the user hands an approved mock to this skill, the job is structure, not design:
+
+- **The mock is the spec.** Keep every colour, font, size, spacing, radius, shadow, image ratio, motion and breakpoint behaviour as rendered. Do not restyle, "improve", or apply the Refuse/Prefer lists, Hallmark themes or Impeccable commands. Do not run them during conversion.
+- **Change only the plumbing:** Client-First class names and the section nest, px to the nearest approved rem (where that shifts anything visibly, keep the exact value as a variable and note it), mock tokens to Webflow Variables with the same values, mock animations to the closest IX3 preset, and the "Porting to Webflow" rules below.
+- **Brand and Client-First conflicts get flagged, not fixed.** If the mock breaks a rule here (a non-approved value, a structure Webflow can't build), keep the look, start the line with "Flag:" and let the user decide.
+- **Prove it matches.** Screenshot the mock and the conversion at 1440, 992, 768 and 390 side by side. Any visible difference is a bug unless the user approved it.
 
 ## Porting to Webflow
 
