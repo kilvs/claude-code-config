@@ -63,3 +63,7 @@ Read that first on any new conversion.
   limits, test checklist.
 - `stacks/webflow/README.md` for every Webflow build rule; `stacks/shopify/README.md`.
 - Docs index `https://docs.smootify.io/llms.txt`; changelog `https://docs.smootify.io/changelog`.
+
+## Docs digest
+
+`docs-digest.md` (19 Nov 2026): the whole 1.x docs at docs.smootify.io plus part of the 2.0 beta docs at www.smootify.io/docs. Plans, hand-off order, the Smootify MCP, and corrections to `general-setup.md`. general-setup.md was written on 1.x; check the digest before starting a 2.0 build.
