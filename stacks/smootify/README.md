@@ -59,6 +59,8 @@ Read that first on any new conversion.
 | 14 Oct 2026 | Product JSON-LD needed live price and stock | The product element exposes the Storefront data as `element.product` (`variants.nodes`, `media.nodes`, `descriptionHtml`). Build the schema from it in Global Scripts |
 
 ## Pointers
+- **`project-process.md` (this folder): start here on any ecommerce project.** Discovery questions,
+  design-gap checks, test build, real build, launch and hand-off, with who does each step.
 - `general-setup.md` (this folder): setup steps, baseline markup, per-project extras, client
   limits, test checklist.
 - `stacks/webflow/README.md` for every Webflow build rule; `stacks/shopify/README.md`.
