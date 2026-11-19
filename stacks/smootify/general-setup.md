@@ -280,3 +280,15 @@ Recommendations: smootify-product[data-id="related"][data-parent-id = CMS Shopif
 | A combo named `w--current` became `._w--current` | Runtime states like the tab current state go in the section CSS embed |
 | CMS Number fields came out integer | The API cannot set Decimal 0.00. Set it in the Designer, or let Smootify Studio create the collections |
 | Element builder silently skips a class that does not exist yet | Create every class first; check `partial_success` child results |
+
+### More gotchas (QA round, 19 Nov 2026)
+| What happened | Rule |
+|---|---|
+| Collection and vendor links 404 | Build the Collections and Vendors template pages too, even for a product-page test. `smootify-search-discovery[data-collection]` needs no app; `data-vendor` and vendor or brand filters need Shopify's Search & Discovery app |
+| Vendor page without Search & Discovery | `smootify-product[data-id="custom-query"]` with `data-query` bound to a CMS text field holding `vendor:"Name"` lists that vendor's products |
+| Native Webflow Slider stuck at two slides over MCP | The builder ignores slide children and WHTML refuses slides in a mask. Product sliders still work (Smootify adds a slide per product); a static image slider needs the Designer or a CSS scroll-snap row |
+| A product list slider showed no arrows | When every card fits, Smootify adds `is-disabled` to both arrows. Style the combo |
+| `details` did not start open | An empty `open` attribute set over MCP did not survive publish. Use `open="open"` |
+| A Paragraph built with child spans showed Lorem ipsum | The builder keeps the default text node. Use a Div block for inline wrappers, or remove the String node |
+| A calc() value bound the wrong token | `calc(-1 * var(--x))` was stored as the plain variable. Avoid calc with tokens in the style API |
+| CMS Number fields to Decimal | Designer > CMS > collection Settings > field > Format Decimal, Precision 1.00, Save Field, Save Collection. API then reports `format: decimal, precision: 2` |
