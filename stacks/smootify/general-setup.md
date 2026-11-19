@@ -320,3 +320,12 @@ Not yet proven on a live launch. Written from Smootify's 2.0 domains docs and ou
   in Webflow before switching DNS.
 - **Search engines.** Check whether the Redirect Theme sends a server redirect or a script redirect.
   If it is a script, keep the checkout sub-domain out of the index.
+- **Redirect Theme tested on a dev store (19 Nov 2026, v1.1.1, Proven).** Settings: Hostname = the
+  Webflow domain, Products Base `products`, Collections Base `collections`, Custom redirects
+  `/pages/>/`. Results: `/products/<handle>`, `/collections/<handle>` and `/` land on the matching
+  Webflow URL; `/pages/contact` lands on `/contact`; `/search?q=` lands on `/search?q=` (so the
+  Webflow site needs a search page); query strings are kept. `/cart` is not redirected and shows
+  the theme's own cart page with a Shopify header and featured products: the one storefront page a
+  visitor can still see. Buy now and checkout keep working with the theme published. The redirect
+  is a script plus a canonical tag to the Webflow URL, not a server redirect. Theme settings are in
+  the theme editor: Theme settings > Storefront.
