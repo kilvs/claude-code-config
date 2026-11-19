@@ -303,6 +303,7 @@ Recommendations: smootify-product[data-id="related"][data-parent-id = CMS Shopif
 | Escape did not close a `details` dropdown | `details` has no Escape. Use a popover (`popover="auto"` panel plus a `popovertarget` button): Escape and click outside close it, and focus goes back to the button |
 | Webflow MCP style API refused a CSS custom property | `--name` properties are rejected. Put them in the site's global embed, or set them in the Designer style panel |
 | A popover panel landed in the middle of the window | Popovers sit in the top layer, so `absolute` inside the navbar no longer works. Give the panel `position: fixed` with its own top, right, margin 0 and bottom auto |
+| Focus the search field when its popover opens | The Webflow API reserves `autofocus`. Add a capture-phase `toggle` listener on `document` (outside the ready gate) that focuses `input[name="query"]` when the panel's `newState` is `open` |
 
 ## 11. Launch standard: domains, checkout and static pages (agreed 19 Nov 2026)
 
