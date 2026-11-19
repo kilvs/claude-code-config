@@ -294,3 +294,29 @@ Recommendations: smootify-product[data-id="related"][data-parent-id = CMS Shopif
 | CMS Number fields to Decimal | Designer > CMS > collection Settings > field > Format Decimal, Precision 1.00, Save Field, Save Collection. API then reports `format: decimal, precision: 2` |
 | Filters before Search & Discovery is installed | Shopify still returns its default Availability (and Price) filters, so those render; vendor, option and tag filters stay hidden until the app defines them. The filter `label` must match the app's label exactly |
 | "1 products" | `filter="count"` writes only the number, with no plural rule. Put the label before it ("Results: 1") |
+
+## 11. Launch standard: domains, checkout and static pages (agreed 19 Nov 2026)
+
+Not yet proven on a live launch. Written from Smootify's 2.0 domains docs and our dev-store tests.
+
+- **Domains.** Root and `www` point to Webflow. Checkout gets a sub-domain such as `shop.example.com`,
+  connected in Shopify (Settings > Domains) and set as the **primary** domain. Remove the main
+  domain from Shopify, or checkout breaks. Custom domains need a paid Shopify plan, so a dev store
+  checks out on `.myshopify.com` until hand-off.
+- **No reverse proxy.** Proxying Shopify checkout behind the main domain is unsupported and puts
+  payments (Shop Pay, wallets, 3-D Secure, fraud checks) at risk. Webflow only supports a proxy on
+  Enterprise. Checkout pages aren't indexed, so there is no SEO gain.
+- **Lock the Shopify storefront with Smootify's Redirect Theme** (free zip from Smootify's domains
+  page). Upload it in Online Store > Themes, set Hostname (with `www`), Products Base `products`,
+  Collections Base `collections`, publish. It sends every storefront page except the cart to the
+  same Webflow page. Checkout, order status and discount links keep working. Do not use the store
+  password for this: it blocks checkout too.
+- **Static pages** (about, contact, stockists, blog) live only in Webflow. Leave Shopify Pages empty.
+  Add a Webflow redirect `/pages/(.*)` to `/%1` so Shopify-style page links land.
+- **Policies** go in Shopify Settings > Policies (checkout shows them in pop-ups) **and** on Webflow
+  pages for the footer.
+- **Checkout links back.** Point the checkout logo and "continue shopping" to the Webflow domain.
+- **Replacing an existing site.** Crawl the old site and add a permanent redirect for every old URL
+  in Webflow before switching DNS.
+- **Search engines.** Check whether the Redirect Theme sends a server redirect or a script redirect.
+  If it is a script, keep the checkout sub-domain out of the index.
