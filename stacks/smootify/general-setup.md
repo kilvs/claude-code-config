@@ -299,6 +299,10 @@ Recommendations: smootify-product[data-id="related"][data-parent-id = CMS Shopif
 | Two navbar `details` panels open at once | Give both the same `name` attribute (exclusive accordion). Opening one closes the other |
 | Webflow MCP refused `placeholder` | It is a reserved attribute name on form inputs. Set placeholder text in the Designer |
 | Chrome window would not resize for breakpoint checks | Load the page in a same-origin iframe at 768 and 390 px and measure inside it |
+| Mobile menu with no script (2.0, Proven) | Make the links `nav` a popover: `popover="auto"`, an ID, `data-overflow-body`, opened by `button[popovertarget=<id>]`. Smootify hides closed popovers with `display: var(--smootify-closed-display, none) !important`, so set `--smootify-closed-display: flex` on the class at desktop and `none` below 992px. At desktop also reset the browser popover box (position static, inset auto, margin 0, width and height auto, transparent background). Escape, click outside and scroll lock come free |
+| Escape did not close a `details` dropdown | `details` has no Escape. Use a popover (`popover="auto"` panel plus a `popovertarget` button): Escape and click outside close it, and focus goes back to the button |
+| Webflow MCP style API refused a CSS custom property | `--name` properties are rejected. Put them in the site's global embed, or set them in the Designer style panel |
+| A popover panel landed in the middle of the window | Popovers sit in the top layer, so `absolute` inside the navbar no longer works. Give the panel `position: fixed` with its own top, right, margin 0 and bottom auto |
 
 ## 11. Launch standard: domains, checkout and static pages (agreed 19 Nov 2026)
 
