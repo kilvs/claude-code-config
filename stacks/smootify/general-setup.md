@@ -265,7 +265,7 @@ Recommendations: smootify-product[data-id="related"][data-parent-id = CMS Shopif
 | A sold-out value still gets clicked | 2.0 marks it `is-disabled` but keeps it clickable; both submit buttons get `disabled` + `is-disabled`. Style the combo classes |
 | Loading labels both vanished | Smootify toggles `[data-state]` with inline styles. Add no CSS for them |
 | The breadcrumb said "Home page" | Dev stores have Shopify's default "Home page" collection. `exclude="Home page"` on `product="first-collection"` |
-| Buy now opened `/password` | A dev store's storefront password blocks checkout. Remove it before checkout tests (Smootify's pre-publish list) |
+| Buy now opened `/password` | A dev store's storefront password blocks checkout. On a dev or client-transfer store Private mode is locked on, so it can't be removed: enter the password from Online Store > Preferences > Store access once in the browser. It goes away when the store gets a paid plan (after transfer) |
 | "Project ... is not connected" in the console | The Smootify dashboard connection is not made yet. The loader still loads; nothing renders |
 | `reviews.rating` definition refused | Shopify reserves the `reviews` namespace for its standard definitions, and the admin's suggestion list may not offer them. A reviews app fills them; plan for it |
 | One template, two designs (e.g. drinks vs merch) | Visibility can only bind to component props over MCP. Bind a `data-template` attribute to a CMS text field and hide sections with attribute selectors in the section CSS embed |
