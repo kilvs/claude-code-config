@@ -294,6 +294,11 @@ Recommendations: smootify-product[data-id="related"][data-parent-id = CMS Shopif
 | CMS Number fields to Decimal | Designer > CMS > collection Settings > field > Format Decimal, Precision 1.00, Save Field, Save Collection. API then reports `format: decimal, precision: 2` |
 | Filters before Search & Discovery is installed | Shopify still returns its default Availability (and Price) filters, so those render; vendor, option and tag filters stay hidden until the app defines them. The filter `label` must match the app's label exactly |
 | "1 products" | `filter="count"` writes only the number, with no plural rule. Put the label before it ("Results: 1") |
+| Predictive search in a navbar dropdown (2.0, Proven) | `details` > `summary` (icon) > `smootify-search[limit]` holding a Form with a text field named `query`, `button[data-action="close"]`, `search-no-query`, `search-with-query` > one `search-result` (`search="url|image|title|vendor|price"`), `search-empty`. The close button closes the parent `details`. A brand name matches its products. Smootify shows and hides the regions itself |
+| Cart drawer (2.0, Proven) | `smootify-cart[data-open="on-add"]` > `button[data-action="open-cart"]` + `dialog` > panel > `button[data-action="close-cart"]` and a Form Block whose form holds one `cart-item` template, `[cart="subtotal"]` and the Form Button (checkout). Success message = empty cart. `quantity-input` with buttons `data-action="minus|plus"` and an input named `quantity` |
+| Two navbar `details` panels open at once | Give both the same `name` attribute (exclusive accordion). Opening one closes the other |
+| Webflow MCP refused `placeholder` | It is a reserved attribute name on form inputs. Set placeholder text in the Designer |
+| Chrome window would not resize for breakpoint checks | Load the page in a same-origin iframe at 768 and 390 px and measure inside it |
 
 ## 11. Launch standard: domains, checkout and static pages (agreed 19 Nov 2026)
 
