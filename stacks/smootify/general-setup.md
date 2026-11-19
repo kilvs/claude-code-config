@@ -229,3 +229,54 @@ Run on the published staging site, in a visible browser tab, at desktop, tablet 
   tree, with custom tags in `data.tag` and attributes in `data.attributes`.
 - Script source, for behaviour the docs do not cover:
   `https://cdn.smootify.io/assets/latest/js/index.js` and the chunks it imports.
+
+## 10. Smootify 2.0 product page (Proven, 19 Nov 2026)
+
+Built on two test sites with the 2.0 loader (`assets/v2/loader.js`, served 2.0.0-beta.14), CMS
+slugs `products` / `collections` / `vendors`, and tested on `.webflow.io`. This replaces the
+product page markup in section 5 for 2.0 sites.
+
+```
+smootify-product[data-id = CMS Shopify ID]
+  a[product="first-collection"][exclude="Home page"]   breadcrumb collection
+  div[product="gallery"][include-media]
+    Webflow Slider[gallery="slider"]   keep ONE slide with an Image; Smootify copies it per media
+    a[gallery="thumbnails"] > img      one template; current one gets is-active
+  [product="title"]   smootify-price > [data-prop="price"] + [data-prop="compareAtPrice"]
+  [product="description"]  (on a text-rich-text div)
+  div[has-option="0"] > [variant="option1-name"] + variant-selector[data-option="1"] > select
+                                                          (a dropdown picker; works outside the form)
+  smootify-add-to-cart > Webflow form
+    div[has-option="1|2"] > [variant="option2-name"] + variant-swatches[data-option="2|3"]
+      > ONE button template > span[option="title"]       is-active / is-disabled classes
+    quantity-input > button[data-action=minus] + input[name=quantity] + button[data-action=plus]
+    button[type=submit] > [data-state=default] + [data-state=loading]
+    button[type=submit][name=buy-now]
+  div[if-metafield="rating_count"][namespace="reviews"]  stars: [metafield="rating"] sets
+    --metafield-rating; fill width var(--metafield-rating) in the section CSS embed
+Other sections: smootify-product[data-id = CMS Shopify ID] > button[data-is="direct-add-to-cart"]
+Recommendations: smootify-product[data-id="related"][data-parent-id = CMS Shopify ID][limit]
+  card template, repeated by Smootify; variant-swatches inside the card picks the size for quick add.
+```
+
+### Gotchas found
+| What happened | Rule |
+|---|---|
+| A sold-out value still gets clicked | 2.0 marks it `is-disabled` but keeps it clickable; both submit buttons get `disabled` + `is-disabled`. Style the combo classes |
+| Loading labels both vanished | Smootify toggles `[data-state]` with inline styles. Add no CSS for them |
+| The breadcrumb said "Home page" | Dev stores have Shopify's default "Home page" collection. `exclude="Home page"` on `product="first-collection"` |
+| Buy now opened `/password` | A dev store's storefront password blocks checkout. Remove it before checkout tests (Smootify's pre-publish list) |
+| "Project ... is not connected" in the console | The Smootify dashboard connection is not made yet. The loader still loads; nothing renders |
+| `reviews.rating` definition refused | Shopify reserves the `reviews` namespace for its standard definitions, and the admin's suggestion list may not offer them. A reviews app fills them; plan for it |
+| One template, two designs (e.g. drinks vs merch) | Visibility can only bind to component props over MCP. Bind a `data-template` attribute to a CMS text field and hide sections with attribute selectors in the section CSS embed |
+| `related` on a tiny catalogue | Worked with 4 products (3 returned). No fallback needed for tests |
+| Shopify CSV import by script | The file input sits in a shadow root (`s-internal-drop-zone`). Set it with a DataTransfer and fire `change` only. "Publish to all sales channels" includes the Headless channel |
+
+### Webflow MCP gotchas (same build)
+| What happened | Rule |
+|---|---|
+| `row-gap` refused `variable_as_value` ("does not support a variable of type length") | Pass `property_value: "var(--css-name)"`; it binds the token. `column-gap` takes the id fine |
+| Removing one SliderArrow deleted the whole Slider | Leave arrows and nav; remove only the extra slide |
+| A combo named `w--current` became `._w--current` | Runtime states like the tab current state go in the section CSS embed |
+| CMS Number fields came out integer | The API cannot set Decimal 0.00. Set it in the Designer, or let Smootify Studio create the collections |
+| Element builder silently skips a class that does not exist yet | Create every class first; check `partial_success` child results |
