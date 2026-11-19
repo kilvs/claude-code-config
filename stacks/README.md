@@ -8,7 +8,7 @@ the project's `CLAUDE.md` overrides both.
 |---|---|
 | `webflow/` | Client-First builds through the Designer and the Webflow MCP. The longest playbook. |
 | `shopify/` | Liquid themes; to be filled from the first build. |
-| `smootify/` | Shopify storefronts in Webflow; `general-setup.md` is the conversion guide. |
+| `smootify/` | Shopify storefronts in Webflow; `project-process.md` is the ecommerce project process, `general-setup.md` the conversion guide, skill `smootify-project` runs it. |
 | `wordpress/` | Themes and Elementor. Skills: `wordpress-theme-dev`, `wordpress-elementor`. |
 | `gsap/` | Custom-code motion; skill `gsap`. Webflow motion stays IX3. |
 | `php/` | Modern PHP before the WordPress dialect. |

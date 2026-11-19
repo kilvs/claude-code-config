@@ -59,6 +59,7 @@ Read that first on any new conversion.
 | 14 Oct 2026 | Product JSON-LD needed live price and stock | The product element exposes the Storefront data as `element.product` (`variants.nodes`, `media.nodes`, `descriptionHtml`). Build the schema from it in Global Scripts |
 
 ## Pointers
+- **Skill `/smootify-project`** runs this process step by step (19 Nov 2026). The `smootify` MCP (read only, `https://mcp.smootify.io/mcp`) is loaded per profile (settings/profiles.json); first use needs `/mcp` sign-in with the Smootify account.
 - **`project-process.md` (this folder): start here on any ecommerce project.** Discovery questions,
   design-gap checks, test build, real build, launch and hand-off, with who does each step.
 - `general-setup.md` (this folder): setup steps, baseline markup, per-project extras, client

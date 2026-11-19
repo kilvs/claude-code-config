@@ -32,6 +32,7 @@ without the `anthropic-skills:` prefix and wins when they disagree.
 | FiveM (game dev) | `fivem-mission-builder/` | `anthropic-skills:fivem-mission-builder` |
 | FiveM (game dev) | `fivem-nui-dev/` | `anthropic-skills:fivem-nui-dev` |
 | FiveM (game dev) | `fivem-security/` | `anthropic-skills:fivem-security` |
+| Ecommerce | `smootify-project/` | none |
 
 ## Webflow official skills (vendored 29 Sep 2026)
 
