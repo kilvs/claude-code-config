@@ -292,3 +292,5 @@ Recommendations: smootify-product[data-id="related"][data-parent-id = CMS Shopif
 | A Paragraph built with child spans showed Lorem ipsum | The builder keeps the default text node. Use a Div block for inline wrappers, or remove the String node |
 | A calc() value bound the wrong token | `calc(-1 * var(--x))` was stored as the plain variable. Avoid calc with tokens in the style API |
 | CMS Number fields to Decimal | Designer > CMS > collection Settings > field > Format Decimal, Precision 1.00, Save Field, Save Collection. API then reports `format: decimal, precision: 2` |
+| Filters before Search & Discovery is installed | Shopify still returns its default Availability (and Price) filters, so those render; vendor, option and tag filters stay hidden until the app defines them. The filter `label` must match the app's label exactly |
+| "1 products" | `filter="count"` writes only the number, with no plural rule. Put the label before it ("Results: 1") |
