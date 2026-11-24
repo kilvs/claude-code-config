@@ -54,6 +54,26 @@ Store or stockist locators on brand sites ("where to buy"). Fits Webflow, WordPr
 7. Before launch: swap to a Mapbox token restricted to the live and staging domains (needs a card
    on Mapbox, see gotchas), and pick the plan.
 
+## Updating the store list (checked in Storepoint's docs, 25th Nov 2026)
+Every location belongs to the "source" it came from (Imports & Syncs). Three ways to keep it current:
+
+| Way | Plan | How it updates |
+|---|---|---|
+| Dashboard by hand | All | Add, edit or delete one location at a time. Fine for a handful of changes |
+| Spreadsheet re-upload | All (Starter's only bulk option) | Upload the new CSV to the same source. Only that source's locations are replaced; others stay |
+| Google Sheets sync | Pro daily, Business every 5 min | Storepoint reads the sheet on schedule. New row adds a store, edited cell updates it, deleted row removes it |
+
+Sheets sync rules:
+- Headings in row 1, one store per row, one tab (the first tab unless the link points to another).
+- Name and full address are required. Address parts can sit in separate columns. Coordinates optional.
+- Stores are matched by name and address, so renaming or moving a store counts as remove plus add.
+  Duplicate rows are merged.
+- Share the sheet as "Anyone with the link: Viewer", or ask Storepoint for their sync account email to keep
+  it private. Keep nothing confidential in a link-shared sheet.
+- Filterable data (store type, products) maps to Tags; extra text or buttons need Custom Fields set up first.
+- Export a backup before connecting an existing list, and use one source per list to avoid duplicates.
+- Docs: storepoint.co/docs/features/google-sheets-sync
+
 ## Accounts and tools
 - Dashboard: app.storepoint.co/dashboard. Sign-in is the account owner's job (password or Google).
 - Public read API, handy for checks without the browser:

@@ -41,6 +41,11 @@ account. It's a public key, so it's fine to share.
 Please fill in the attached spreadsheet, one row per store: store name, street address, suburb or
 city, state or region, postcode and country. Phone, website and store type are optional.
 
+**Updating your stores later**
+On Pro, I can connect the store list to a Google Sheet. After that you just edit the sheet: add a
+row for a new store, change a cell to update one, delete a row to remove one. Storepoint picks it
+up once a day. On Starter, you send me the updated spreadsheet and I re-upload it.
+
 **4. Where it goes**
 Let me know which page it should sit on. I'll set it up on our staging site first so you can
 try it before it goes live.
