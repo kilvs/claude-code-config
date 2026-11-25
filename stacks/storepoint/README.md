@@ -91,6 +91,7 @@ Sheets sync rules:
 | 25th Nov 2026 | Mapbox would not add URL restrictions on the free token | URL-restricted tokens need a payment method on Mapbox. Default token is fine for a test; restrict before launch |
 | 24th Nov 2026 | Searching a bare place name ("Bondi") landed abroad on the dashboard preview | Set the country restriction, and test on the real embed with a key, not the preview |
 | 24th Nov 2026 | Cancelling the trial | Cancel turns the locator off at once, not at the end of the trial. Decide keep or cancel before the trial date |
+| 25th Nov 2026 | A 4-digit NZ postcode ("1011") only suggested Singapore postcodes (6-digit codes starting 1011..); "Auckland 1011" worked. AU "2026" worked alone. HK "Causeway Bay" gave no HK suggestion, "Wan Chai" and "Hong Kong" did | Test each launch country with a suburb, a bare postcode and a postcode plus city. Tell the client where suggestions are thin (it is Mapbox's place data, not the store list) |
 | 25th Nov 2026 | A client was told "keep the list in a Google Sheet and the map updates from it" before the plan was picked, then had to be corrected | Sheet sync is a Pro feature. Never promise it without naming the plan and price; on Starter the sheet is only the master list we re-upload |
 | 25th Nov 2026 | The add-location address suggestion was a different street | Keep the typed address unless the suggestion is the same place; check the pin |
 
