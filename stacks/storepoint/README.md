@@ -71,6 +71,7 @@ Sheets sync rules:
 - Share the sheet as "Anyone with the link: Viewer", or ask Storepoint for their sync account email to keep
   it private. Keep nothing confidential in a link-shared sheet.
 - Filterable data (store type, products) maps to Tags; extra text or buttons need Custom Fields set up first.
+- **Custom Fields (tested 25th Nov 2026, Starter plan):** Manage Locations > Custom Fields > Add Field, pick a type (Button, Text/Additional Info, Phone Number, Social/Icon Link), give it a label, Save Changes. Each location edit page then shows the field under Custom Fields. On the widget a text field shows as "Label Value" on the store card, with no filter. Use it for info the client does not want people to filter by (Nekta store type: Grocery, Dairy, Petrol). The API returns it as `custom_fields` JSON keyed by a field id. Gotcha: after typing, the "Save Changes" bar slides in, so an instant click misses it; wait about 1 s, then click, and check the API.
 - Export a backup before connecting an existing list, and use one source per list to avoid duplicates.
 - Docs: storepoint.co/docs/features/google-sheets-sync
 
